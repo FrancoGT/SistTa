@@ -1,0 +1,16 @@
+.env
+.env.docker
+.git
+.idea
+.vscode
+docker-compose.yml
+Dockerfile
+.dockerignore
+README.md
+db/
+tests/
+writable/cache/*
+writable/logs/*
+writable/session/*
+writable/debugbar/*
+!writable/**/index.html
