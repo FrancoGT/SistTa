@@ -1,6 +1,6 @@
 <h1>Confirmar</h1>
 <br>
-<form name="asignar_servicio" action="<?= base_url() ?>index.php/cobranza/guardar_nuevo_periodo" method ="POST">
+<form data-async-form name="asignar_servicio" action="<?= base_url() ?>index.php/cobranza/guardar_nuevo_periodo" method ="POST">
 <?= csrf_field() ?>
 <h3>
   <?php
@@ -20,7 +20,7 @@
 </p>
 </form>
 
-<form action="<?= base_url() ?>index.php/cobranza" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/cobranza" method ="POST">
 <?= csrf_field() ?>
   <div align="center"> <input type="submit" name="no" id="no" value="No" /> </div>
 </form>

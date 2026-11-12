@@ -1,4 +1,8 @@
 <?php
+  if (service('request')->isAJAX()) {
+    service('response')->setHeader('X-CSRF-Name', csrf_token());
+    service('response')->setHeader('X-CSRF-Hash', csrf_hash());
+  }
   $assets      = base_url('assets') . '/';
   $nombre_user = (string) session('user_nama');
   $iniciales   = '';
@@ -24,7 +28,7 @@
   <!-- DataTables (tablas dinámicas con buscador y paginación) -->
   <link rel="stylesheet" href="<?= $assets ?>bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
   <!-- Estilos globales del sistema -->
-  <link rel="stylesheet" href="<?= $assets ?>css/sistta.css">
+  <link rel="stylesheet" href="<?= $assets ?>css/sistta.css?v=<?= filemtime(FCPATH . 'assets/css/sistta.css') ?>">
 
   <!-- jQuery se carga aquí porque algunas vistas tienen scripts en línea -->
   <script src="<?= $assets ?>bower_components/jquery/dist/jquery.min.js"></script>
@@ -45,9 +49,13 @@
     }
     function AlphaNumeric(e)
     {
-      var keyCode = e.keyCode || e.which;
+      // Teclas de control (Enter, Backspace, flechas, Ctrl+V...) no se filtran
+      if (e.ctrlKey || e.metaKey || e.altKey) { return true; }
+      if (e.key !== undefined && e.key.length !== 1) { return true; }
+      var keyCode = e.charCode || e.keyCode || e.which;
+      if (keyCode < 32) { return true; }
       var regex = /^[\w\s\.-]+$/;
-      return regex.test(String.fromCharCode(keyCode));
+      return regex.test(e.key !== undefined ? e.key : String.fromCharCode(keyCode));
     }
   </script>
 </head>

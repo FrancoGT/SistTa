@@ -3,7 +3,7 @@
   $documento = $ci->getDocumento($id_person);
 ?>
 <br>
-<form action="<?= base_url() ?>index.php/cobranza/cancelar_pago" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/cobranza/cancelar_pago" method ="POST">
 <?= csrf_field() ?>
 <p>Nº de operacion:
   <p for="num_operacion"></p>

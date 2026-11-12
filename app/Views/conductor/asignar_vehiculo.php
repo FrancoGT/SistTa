@@ -1,5 +1,5 @@
 <h1>Asignar Veh&iacute;culo</h1>
-<form action="<?= base_url() ?>index.php/conductor/encontrar_vehiculo" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/conductor/encontrar_vehiculo" method ="POST">
 <?= csrf_field() ?>
 <?php
   echo view('tablas/ficha_conductor', ['filas' => $ci->ficha_conductor($id_person_conductor)]);

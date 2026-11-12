@@ -1,6 +1,6 @@
 <h1>Nuevo Ingreso</h1>
 <br>
-<form action="<?= base_url() ?>index.php/cobranza/cancelar_pago_vehiculo" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/cobranza/cancelar_pago_vehiculo" method ="POST">
 <?= csrf_field() ?>
 <p>Nº de operacion:
   <p for="num_operacion"></p>

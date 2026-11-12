@@ -2,7 +2,7 @@
 <br>
 <?php
 ?>
-<form action="<?= base_url() ?>index.php/vehiculo/encontrar_nuevo_conductor" method="POST">
+<form data-async-form action="<?= base_url() ?>index.php/vehiculo/encontrar_nuevo_conductor" method="POST">
 <?= csrf_field() ?>
   <p>Ingrese DNI o C&oacute;digo de Conductor</p>
   <p>

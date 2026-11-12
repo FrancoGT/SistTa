@@ -1,12 +1,10 @@
-<h1>Caja Chica</h1>
-<form method="POST" action="<?= base_url() ?>index.php/reporte/generar_caja_chica">
+<h2>Caja chica</h2>
+<form data-async-form class="sistta-form-layout" method="post" action="<?= site_url('reporte/generar_caja_chica') ?>">
 <?= csrf_field() ?>
-<h3>Ingrese un rango de fechas para generar el Reporte</h3>
-<h3>Fecha inicio</h3>
-<input type="date" required id="inicio" name="inicio" >
-<h3>Fecha fin</h3>
-<input type="date" required id="fin" name="fin" >
-<br>
-<br>
-<input type="submit" id="generar_caja_chica" name="generar_caja_chica" value="Generar Reporte">
+<p class="help-block">Selecciona el rango de fechas del reporte.</p>
+<div class="sistta-form-grid">
+  <div class="form-group"><label for="inicio">Fecha de inicio</label><input class="form-control" type="date" id="inicio" name="inicio" required></div>
+  <div class="form-group"><label for="fin">Fecha de fin</label><input class="form-control" type="date" id="fin" name="fin" required></div>
+</div>
+<div class="sistta-form-actions"><button class="btn btn-primary" type="submit" name="generar_caja_chica" value="1">Generar reporte</button></div>
 </form>

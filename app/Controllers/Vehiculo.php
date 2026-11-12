@@ -631,6 +631,7 @@ class Vehiculo extends BaseController
         echo view('sidebar');
         echo view('vehiculo/registrar_vehiculo', $info);
         echo view('footer');
+        return;
       }
       if ($id_person_conductor == '')
       {

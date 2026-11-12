@@ -168,4 +168,7 @@
   $(function () {
     $('table.js-datatable').each(function () { iniciar($(this)); });
   });
+  $(document).on('sistta:content', function (_, root) {
+    $(root).find('table.js-datatable').each(function () { iniciar($(this)); });
+  });
 })(window.jQuery);

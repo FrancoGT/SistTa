@@ -1,6 +1,6 @@
 <h1>Agregar Servicio</h1>
 <br>
-<form name="asignar_servicio" action="<?= base_url() ?>index.php/cobranza/encontrar_servicio_afiliado" method ="POST">
+<form data-async-form name="asignar_servicio" action="<?= base_url() ?>index.php/cobranza/encontrar_servicio_afiliado" method ="POST">
 <?= csrf_field() ?>
 <h3> Buscar Servicio </h3>
 <br>

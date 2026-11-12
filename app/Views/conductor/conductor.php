@@ -5,7 +5,7 @@ $conductores ??= $ci->listar_conductores();
 <h1>Conductores</h1>
 <h3>
   <?php if (isset($mensaje)) { echo ' ' . $mensaje . ' '; } ?>
-  <a class="btn btn-info" href="<?= site_url('conductor/registrar_conductor') ?>"><i class="ion ion-person-add"></i> Nuevo Conductor</a>
+  <a data-form-modal class="btn btn-info" href="<?= site_url('conductor/registrar_conductor') ?>"><i class="ion ion-person-add"></i> Nuevo Conductor</a>
 </h3>
 <?php if (empty($conductores)): ?>
   <p class="alert alert-danger">No hay registros de conductores a&uacute;n</p>
@@ -28,8 +28,8 @@ $conductores ??= $ci->listar_conductores();
         <td><?= esc($c->documento) ?></td>
         <td><?= $c->estado_conductor == 1 ? 'Activo' : 'Inactivo' ?></td>
         <td class="dt-acciones">
-          <a class="btn btn-primary" href="<?= site_url('conductor/actualizar_conductor/' . esc($c->id_conductor, 'url')) ?>" title="Actualizar conductor"><i class="fa fa-refresh"></i> <i class="fa fa-male"></i></a>
-          <a class="btn btn-info" href="<?= site_url('conductor/asignar_vehiculo/' . esc($c->id_person_conductor, 'url')) ?>" title="Asignar Veh&iacute;culo"><i class="fa fa-plus"></i> <i class="fa fa-car"></i></a>
+          <a data-form-modal class="btn btn-primary" href="<?= site_url('conductor/actualizar_conductor/' . esc($c->id_conductor, 'url')) ?>" title="Actualizar conductor"><i class="fa fa-refresh"></i> <i class="fa fa-male"></i></a>
+          <a data-form-modal class="btn btn-info" href="<?= site_url('conductor/asignar_vehiculo/' . esc($c->id_person_conductor, 'url')) ?>" title="Asignar Veh&iacute;culo"><i class="fa fa-plus"></i> <i class="fa fa-car"></i></a>
         </td>
       </tr>
       <?php endforeach ?>

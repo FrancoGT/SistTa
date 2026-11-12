@@ -206,6 +206,17 @@ class Cobranza extends BaseController
       echo view('footer');
     }
   }
+  // "valor~criterio" -> [valor, criterio]; se corta en el último "~" para no romper códigos alfanuméricos
+  public function separar_busqueda($info)
+  {
+    $info = (string) $info;
+    $pos = strrpos($info, '~');
+    if ($pos === false)
+    {
+      return [trim($info), ''];
+    }
+    return [trim(substr($info, 0, $pos)), substr($info, $pos + 1)];
+  }
   public function buscar_afiliado($data_afiliado)
   {
     $datos_afiliado = array(
@@ -214,9 +225,8 @@ class Cobranza extends BaseController
     $encontrado = array(
         "id_person_afiliado" => ""
     );
-    $dividir = explode('~', $data_afiliado);
-    $data_afiliado = $dividir[0];
-    $criterio = $dividir[1] ?? '';
+    [$data_afiliado, $criterio] = $this->separar_busqueda($data_afiliado);
+    if ($data_afiliado === '') { return $encontrado; }
     if (! in_array($criterio, ['cod_afiliado', 'documento'], true)) { return $encontrado; }
     $datos_afiliado = $this->criterio_bus_afiliado($criterio, $data_afiliado);
     if ($datos_afiliado['id_person_afiliado'] != '')
@@ -248,9 +258,8 @@ class Cobranza extends BaseController
     $encontrado = array(
         "id_vehiculo" => ""
     );
-    $dividir = explode('~', $data_vehiculo);
-    $data_vehiculo = $dividir[0];
-    $criterio = $dividir[1] ?? '';
+    [$data_vehiculo, $criterio] = $this->separar_busqueda($data_vehiculo);
+    if ($data_vehiculo === '') { return $encontrado; }
     if (! in_array($criterio, ['cod_vehiculo', 'placa'], true)) { return $encontrado; }
     $datos_vehiculo = $this->criterio_bus_vehiculo($criterio, $data_vehiculo);
     if ($datos_vehiculo['id_vehiculo'] != '')
@@ -314,9 +323,8 @@ class Cobranza extends BaseController
     $encontrado = array(
         "id_person_conductor" => ""
     );
-    $dividir = explode('~', $data_conductor);
-    $data_conductor = $dividir[0];
-    $criterio = $dividir[1] ?? '';
+    [$data_conductor, $criterio] = $this->separar_busqueda($data_conductor);
+    if ($data_conductor === '') { return $encontrado; }
     $datos_conductor = $this->criterio_bus_conductor($criterio, $data_conductor);
     if ($datos_conductor['id_person_conductor'] != '')
       $encontrado = $datos_conductor;
@@ -356,7 +364,7 @@ class Cobranza extends BaseController
         'id_person_afiliado' => ''
     );
     $form = $this->request->getPost();
-    $info = $form['info_afiliado'];
+    $info = (string) ($form['info_afiliado'] ?? '');
     if ($this->buscar_afiliado($info) != $Afiliado_No_Encontrado)
     {
       $busquedas = true;
@@ -381,7 +389,7 @@ class Cobranza extends BaseController
         'id_person_conductor' => ''
     );
     $form = $this->request->getPost();
-    $info = $form['info_conductor'];
+    $info = (string) ($form['info_conductor'] ?? '');
     if ($this->buscar_conductor($info) != $Conductor_No_Encontrado)
     {
       $busquedas = true;
@@ -406,7 +414,7 @@ class Cobranza extends BaseController
         'id_vehiculo' => ''
     );
     $form = $this->request->getPost();
-    $info = $form['info_vehiculo'];
+    $info = (string) ($form['info_vehiculo'] ?? '');
     if ($this->buscar_vehiculo($info) != $Vehiculo_No_Encontrado)
     {
       $busquedas = true;

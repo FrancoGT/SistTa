@@ -1,6 +1,6 @@
 <h1>Agregar Propietario</h1>
 <br>
-<form action="<?= base_url() ?>index.php/vehiculo/encontrar_propietario_add" method="POST">
+<form data-async-form action="<?= base_url() ?>index.php/vehiculo/encontrar_propietario_add" method="POST">
 <?= csrf_field() ?>
   <p>Ingrese DNI o C&oacute;digo de Afiliado</p>
   <p>

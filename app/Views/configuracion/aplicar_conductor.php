@@ -1,6 +1,6 @@
 <h1>Aplicar a Conductor el Servicio</h1>
 <br>
-<form action="<?= base_url() ?>index.php/configuracion/encontrar_conductor" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/configuracion/encontrar_conductor" method ="POST">
 <?= csrf_field() ?>
 <h3> <?php echo 'Nombre del Servicio: '.esc($nombre_serv); ?></h3>
 <br>

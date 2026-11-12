@@ -672,6 +672,180 @@ a:hover, a:focus { color: var(--c-primary-600); }
 .modal-body { padding: var(--sp-5); }
 .modal-title { font-size: var(--fs-lg); font-weight: 600; }
 
+/* Formularios dinamicos: reglas limitadas al modal, sin heredar el layout de la pagina. */
+#sistta-form-modal .modal-dialog {
+  width: calc(100% - 32px);
+  max-width: 800px;
+  margin: 32px auto;
+}
+#sistta-form-modal .modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 64px);
+  max-height: calc(100dvh - 64px);
+  overflow: hidden;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+}
+#sistta-form-modal .modal-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-6);
+  background: var(--c-surface-2);
+}
+#sistta-form-modal .modal-title { flex: 1; margin: 0; line-height: 1.4; font-size: 18px; }
+#sistta-form-modal .modal-header .close {
+  order: 2;
+  float: none;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  border-radius: var(--radius-sm);
+  color: var(--c-text-2);
+  opacity: 1;
+  text-shadow: none;
+}
+#sistta-form-modal .close:hover { background: var(--c-border); }
+#sistta-form-modal .modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--sp-6);
+}
+#sistta-form-modal .modal-footer {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: var(--sp-3) var(--sp-6);
+  background: var(--c-surface-2);
+}
+#sistta-form-modal .sistta-modal-heading,
+#sistta-form-modal .modal-body br,
+#sistta-form-modal .modal-body p:empty,
+#sistta-form-modal label:empty,
+#sistta-form-modal .form-group:empty { display: none; }
+#sistta-form-modal form { margin: 0 0 var(--sp-5); }
+#sistta-form-modal form:last-child { margin-bottom: 0; }
+#sistta-form-modal .form-group { margin: 0 0 var(--sp-4); }
+#sistta-form-modal .modal-body p { margin: 0 0 var(--sp-2); line-height: 1.5; }
+#sistta-form-modal label,
+#sistta-form-modal .form-group > p,
+#sistta-form-modal fieldset > p:first-child {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-text);
+}
+#sistta-form-modal .form-control { max-width: 100%; margin: 6px 0 var(--sp-4); }
+#sistta-form-modal .form-group > .form-control:last-child { margin-bottom: 0; }
+#sistta-form-modal textarea.form-control { height: auto; min-height: 96px; resize: vertical; }
+#sistta-form-modal input[type="file"] { height: auto; padding: var(--sp-2); }
+#sistta-form-modal .form-control[readonly] { background: var(--c-surface-2); color: var(--c-text-2); }
+#sistta-form-modal :is(input, select, textarea):user-invalid { border-color: var(--c-red); }
+#sistta-form-modal input:is([type="radio"], [type="checkbox"]) {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin: 0 6px 0 0;
+  vertical-align: middle;
+  accent-color: var(--c-primary);
+}
+#sistta-form-modal p:has(> input:is([type="radio"], [type="checkbox"])) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  min-height: 32px;
+  margin-right: var(--sp-5);
+  font-weight: 400;
+}
+#sistta-form-modal fieldset { margin: 0 0 var(--sp-4); padding: 0; border: 0; min-width: 0; }
+#sistta-form-modal .modal-body :is(h1, h2, h3, h4, h5, h6) {
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  font-weight: 600;
+  margin: var(--sp-4) 0 var(--sp-3);
+}
+#sistta-form-modal .modal-body h3:has(.alert) { margin: 0; }
+#sistta-form-modal .form-group .alert { margin: var(--sp-2) 0 0; font-size: var(--fs-sm); }
+#sistta-form-modal .modal-body [align="center"] { text-align: left; }
+#sistta-form-modal :submit { margin: var(--sp-2) var(--sp-2) 0 0; white-space: normal; }
+#sistta-form-modal .table-responsive { border: 1px solid var(--c-border); border-radius: var(--radius); margin-bottom: var(--sp-4); }
+#sistta-form-modal .table-responsive > table { margin: 0; }
+#sistta-form-modal table { width: 100%; font-size: var(--fs-sm); }
+#sistta-form-modal table :is(th, td) { padding: var(--sp-3); vertical-align: middle; }
+#sistta-form-modal table th { background: var(--c-surface-2); }
+#sistta-form-modal .modal-body img { max-width: 100%; height: auto; border-radius: var(--radius); }
+#sistta-form-modal [aria-busy="true"] { cursor: progress; }
+.sistta-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-5);
+  align-items: start;
+}
+.sistta-form-grid > .sistta-span-all { grid-column: 1 / -1; }
+.sistta-form-grid > .form-group,
+#sistta-form-modal .sistta-form-grid > .form-group { margin: 0; min-width: 0; }
+.sistta-form-layout label,
+.sistta-form-layout .sistta-field-label,
+.sistta-form-layout legend {
+  display: block;
+  margin: 0 0 6px;
+  padding: 0;
+  border: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--c-text);
+}
+.sistta-form-layout .sistta-form-grid .form-control,
+#sistta-form-modal .sistta-form-layout .sistta-form-grid .form-control { margin: 0; }
+.sistta-form-layout .help-block { margin: 6px 0 0; line-height: 1.5; }
+.sistta-options { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 20px; min-height: 38px; }
+.sistta-form-layout .sistta-options label,
+#sistta-form-modal .sistta-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0;
+  font-weight: 400;
+  font-size: var(--fs-base);
+  cursor: pointer;
+}
+.sistta-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--c-border);
+}
+#sistta-form-modal .sistta-form-actions :submit { margin: 0; min-width: 140px; }
+.sistta-form-section { margin-top: var(--sp-6); padding: var(--sp-4); border: 1px solid var(--c-border); border-radius: var(--radius); background: var(--c-surface-2); }
+.sistta-form-section > h3,
+#sistta-form-modal .sistta-form-section > h3 { margin: 0 0 var(--sp-2); font-size: var(--fs-base); }
+.sistta-form-section > .help-block { margin-bottom: var(--sp-4); }
+.sistta-field-error { margin-top: 6px; color: var(--c-red); font-size: var(--fs-sm); }
+.sistta-field-error :is(h1, h2, h3, p),
+#sistta-form-modal .sistta-field-error :is(h1, h2, h3, p) { margin: 0; font-size: var(--fs-sm); font-weight: 400; line-height: 1.5; }
+.sistta-photo-preview { margin-bottom: var(--sp-3); }
+.sistta-search-field { display: flex; align-items: flex-end; gap: var(--sp-3); margin-top: var(--sp-3); }
+.sistta-search-field > div { flex: 1; min-width: 0; }
+#sistta-form-modal .sistta-search-field .form-control { margin: 0; }
+#sistta-form-modal .sistta-search-field :submit { flex-shrink: 0; margin: 0; min-height: var(--control-h); }
+.sistta-photo-preview img,
+#sistta-form-modal .sistta-photo-preview img { max-width: 120px; max-height: 120px; object-fit: contain; }
+@media (max-width: 600px) {
+  .sistta-form-grid { grid-template-columns: minmax(0, 1fr); gap: var(--sp-4); }
+  .sistta-search-field { flex-direction: column; align-items: stretch; }
+  #sistta-form-modal .modal-dialog { width: calc(100% - 16px); margin: 8px auto; }
+  #sistta-form-modal .modal-content { max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); }
+  #sistta-form-modal .modal-header, #sistta-form-modal .modal-body { padding: var(--sp-4); }
+  #sistta-form-modal .modal-footer { padding: var(--sp-3) var(--sp-4); }
+  #sistta-form-modal :submit { width: 100%; margin-right: 0; }
+}
+
 /* 12. Indicadores (dashboard) ----------------------------------------------- */
 .stat-grid {
   display: grid;

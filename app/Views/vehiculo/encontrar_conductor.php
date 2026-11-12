@@ -7,7 +7,7 @@
 
 		<p>¿Desea asignarlo?
 		<p>
-		<form action="<?= base_url() ?>index.php/vehiculo/confirmar_conductor_si" method="POST">
+		<form data-async-form action="<?= base_url() ?>index.php/vehiculo/confirmar_conductor_si" method="POST">
 <?= csrf_field() ?>
 			 <input type="hidden" id="cod_vehiculo_si" name="cod_vehiculo_si" value="<?= esc($cod_vehiculo) ?>">
 			 <input type="hidden" required name="data_afiliado_si" id="data_afiliado_si" value="<?= esc($data_afiliado) ?>"/>
@@ -19,7 +19,7 @@
 			 <input type="submit" name="Si" id="Si" value="Si" />
 		</form>
 		<br>
-		<form action="<?= base_url() ?>index.php/vehiculo/confirmar_conductor_no" method="POST">
+		<form data-async-form action="<?= base_url() ?>index.php/vehiculo/confirmar_conductor_no" method="POST">
 <?= csrf_field() ?>
 			 <input type="hidden" id="cod_vehiculo_no" name="cod_vehiculo_no" value="<?= esc($cod_vehiculo) ?>">
 			 <input type="hidden" required name="data_afiliado_no" id="data_afiliado_no" value="<?= esc($data_afiliado) ?>"/>

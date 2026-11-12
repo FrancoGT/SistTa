@@ -1,110 +1,35 @@
-<script type="text/javascript">
-  function Copiar_Estado()
-  {
-    if(document.actualizar.estado[0].checked)
-    {
-      document.getElementById("estado_nuevo").value = document.actualizar.estado[0].value;
-    }
-    if(document.actualizar.estado[1].checked)
-    {
-      document.getElementById("estado_nuevo").value = document.actualizar.estado[1].value;
-    }
-  }
-</script>
 <?php
-  if (!isset($estado_afiliado))
-  {
-    $estado_afiliado = $estado_nuevo;
-  }
+$estadoActual = $estado ?? $estado_nuevo ?? $estado_afiliado ?? '';
+$campos = [
+    ['cod_afiliado', 'C&oacute;digo', $cod_afiliado ?? '', 'AlphaNumeric', 'error_cod_afiliado'],
+    ['nombre', 'Nombre completo', $nombre ?? '', 'ValidateAlpha', ''],
+    ['documento', 'DNI', $documento ?? '', 'isNumberKey', 'error_documento'],
+    ['telefono', 'Tel&eacute;fono', $telefono ?? '', 'isNumberKey', 'error_telefono'],
+    ['direccion', 'Direcci&oacute;n', $direccion ?? '', 'AlphaNumeric', ''],
+];
 ?>
-<form name="actualizar" action="<?= base_url() ?>index.php/afiliado/actualizar_datos" method ="POST">
+<h2>Actualizar afiliado</h2>
+<form data-async-form class="sistta-form-layout" name="actualizar" action="<?= site_url('afiliado/actualizar_datos') ?>" method="post">
 <?= csrf_field() ?>
-    <h1>Actualizar Afiliado</h1>
-  <input type="hidden" required id="id_afiliado" name="id_afiliado" value="<?= esc($id_afiliado) ?>">
-  <input type="hidden" required id="id_persona" name="id_persona" value="<?= esc($id_persona) ?>">
-  <div class="form-group">
-      <p>C&oacute;digo</p><br>
-      <input autocomplete="off" type="text" onkeypress="return AlphaNumeric(event)" required id="cod_afiliado" name="cod_afiliado" placeholder="C&oacute;digo de Afiliado" value="<?= esc($cod_afiliado) ?>">
-      <?php
-        if (isset($error_cod_afiliado))
-        {
-          if ($error_cod_afiliado != '')
-          {
-            echo "<h3>".$error_cod_afiliado."</h3><br>";
-          }
-        }
-      ?>
+<input type="hidden" name="id_afiliado" value="<?= esc($id_afiliado) ?>">
+<input type="hidden" name="id_persona" value="<?= esc($id_persona) ?>">
+<input type="hidden" name="estado_nuevo" id="estado_nuevo" value="<?= esc($estadoActual) ?>">
+<div class="sistta-form-grid">
+<?php foreach ($campos as [$campo, $etiqueta, $valor, $filtro, $error]): ?>
+  <div class="form-group <?= $campo === 'direccion' ? 'sistta-span-all' : '' ?>">
+    <label for="<?= esc($campo) ?>"><?= $etiqueta ?></label>
+    <input class="form-control" type="text" id="<?= esc($campo) ?>" name="<?= esc($campo) ?>" required autocomplete="off" value="<?= esc($valor) ?>" onkeypress="return <?= esc($filtro) ?>(event)">
+    <?php if ($error !== '' && !empty($$error)): ?><div class="sistta-field-error" role="alert"><?= $$error ?></div><?php endif ?>
   </div>
-
-  <div class="form-group">
-    <p>Nombre</p>
-      <br>
-      <input autocomplete="off" type="text" onkeypress="return ValidateAlpha(event)" required id="nombre" name="nombre" placeholder="Nombre de Afiliado" value="<?= esc($nombre) ?>">
-  </div>
-
-    <div class="form-group">
-      <p>DNI</p><br>
-      <input autocomplete="off" type="text" onkeypress="return isNumberKey(event)" required id="documento" name="documento" placeholder="DNI de Afiliado" value="<?= esc($documento) ?>">
-      <?php
-        if (isset($error_documento))
-        {
-          if ($error_documento != '')
-          {
-            echo "<h3>".$error_documento."</h3><br>";
-          }
-        }
-      ?>
+<?php endforeach ?>
+  <fieldset class="form-group sistta-span-all">
+    <legend>Estado</legend>
+    <div class="sistta-options">
+      <?php foreach (['1' => 'Activo', '0' => 'Inactivo'] as $valor => $texto): ?>
+      <label><input type="radio" name="estado" value="<?= $valor ?>" required <?= (string) $estadoActual === (string) $valor ? 'checked' : '' ?> onchange="this.form.elements.estado_nuevo.value=this.value" ><?= $texto ?></label>
+      <?php endforeach ?>
     </div>
-
-  <div class="form-group">
-      <p>Direcci&oacute;n</p>
-      <br>
-    <input autocomplete="off" type="text" onkeypress="return AlphaNumeric(event)" required id="direccion" name="direccion" placeholder="Direcci&oacute;n de Afiliado" value="<?= esc($direccion) ?>">
-  </div>
-
-    <div class="form-group">
-    <p>Tel&eacute;fono</p>
-    <br>
-    <input autocomplete="off" type="text" onkeypress="return isNumberKey(event)" required id="telefono" name="telefono" placeholder="Tel&eacute;fono de Afiliado" value="<?= esc($telefono) ?>">
-    <?php
-      if (isset($error_telefono))
-      {
-        if ($error_telefono != '')
-        {
-          echo "<h3>".$error_telefono."</h3><br>";
-        }
-      }
-    ?>
-    </div>
-
-  <div class="form-group">
-    <h3>Confirmar el Estado del Afiliado
-      <br>
-    <?php
-      if ($estado_afiliado == '1')
-      {
-        echo "Estado Actual de Afiliado: Activo <br>";
-      }
-      else
-      {
-        echo "Estado Actual de Afiliado: Inactivo <br>";
-      }
-    ?>
-    </h3>
-    <p>
-      <p>Estado</p>
-      <p>
-        <input autocomplete="off" type="radio" required  name="estado" value="1" id="estado" onClick="Copiar_Estado();" /> Activo
-      </p>
-      <p>
-        <input autocomplete="off" type="radio" required name="estado" value="0" id="estado" onClick="Copiar_Estado();" />
-        Inactivo
-      </p>
-    </p>
-    <p>
-      <input autocomplete="off" id="id_afiliado" name="id_afiliado" type="hidden" value="<?= esc($id_afiliado) ?>" />
-      <input autocomplete="off" type="hidden" id="estado_nuevo" name="estado_nuevo" value="<?= esc($estado_afiliado) ?>">
-    </p>
-      <input autocomplete="off" type="submit" name="guardar_afiliado" id="guardar_afiliado" value="Actualizar Afiliado">
-  </div>
+  </fieldset>
+</div>
+<div class="sistta-form-actions"><button class="btn btn-primary" type="submit" name="guardar_afiliado" value="1">Guardar cambios</button></div>
 </form>

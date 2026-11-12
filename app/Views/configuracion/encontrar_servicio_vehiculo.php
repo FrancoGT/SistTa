@@ -1,6 +1,6 @@
 <h1>Confirmar</h1>
 <br>
-<form name="asignar_servicio" action="<?= base_url() ?>index.php/configuracion/guardar_servicio_vehiculo" method ="POST">
+<form data-async-form name="asignar_servicio" action="<?= base_url() ?>index.php/configuracion/guardar_servicio_vehiculo" method ="POST">
 <?= csrf_field() ?>
 <h3>
   <?php
@@ -27,7 +27,7 @@
 </p>
 </form>
 
-<form action="<?= base_url() ?>index.php/configuracion" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/configuracion" method ="POST">
 <?= csrf_field() ?>
   <div align="center"> <input type="submit" name="no" id="no" value="No" /> </div>
 </form>

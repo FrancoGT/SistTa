@@ -1,252 +1,70 @@
-<h1>Registrar Nuevo Veh&iacute;culo</h1>
-<br>
-  <script language="javascript">
-    function Copiar_CV()
-    {
-      document.getElementById("cod_vehiculo_BA").value = document.getElementById("cod_vehiculo").value;
-      document.getElementById("cod_vehiculo_BC").value = document.getElementById("cod_vehiculo").value;
-      document.getElementById("cod_vehiculo_G").value = document.getElementById("cod_vehiculo").value;
-    }
-    function Copiar_DA()
-    {
-      document.getElementById("data_afiliado_BA").value = document.getElementById("data_afiliado").value;
-      document.getElementById("data_afiliado_BC").value = document.getElementById("data_afiliado").value;
-      document.getElementById("data_afiliado_G").value = document.getElementById("data_afiliado").value;
-    }
-    function Copiar_IP_A()
-    {
-      document.getElementById("id_person_afiliado_BA").value = document.getElementById("id_person_afiliado").value;
-      document.getElementById("id_person_afiliado_BC").value = document.getElementById("id_person_afiliado").value;
-      document.getElementById("id_person_afiliado_G").value = document.getElementById("id_person_afiliado").value;
-    }
-    function Copiar_Placa()
-    {
-      document.getElementById("placa_BA").value = document.getElementById("placa").value;
-      document.getElementById("placa_BC").value = document.getElementById("placa").value;
-      document.getElementById("placa_G").value = document.getElementById("placa").value;
-    }
-    function Copiar_Estado()
-    {
-      if(document.seleccionar_estado.estado[0].checked)
-      {
-        document.getElementById("estado_BA").value = document.seleccionar_estado.estado[0].value;
-        document.getElementById("estado_BC").value = document.seleccionar_estado.estado[0].value;
-        document.getElementById("estado_G").value = document.seleccionar_estado.estado[0].value;
-      }
-      if(document.seleccionar_estado.estado[1].checked)
-      {
-        document.getElementById("estado_BA").value = document.seleccionar_estado.estado[1].value;
-        document.getElementById("estado_BC").value = document.seleccionar_estado.estado[1].value;
-        document.getElementById("estado_G").value = document.seleccionar_estado.estado[1].value;
-      }
-    }
-    function Copiar_DC()
-    {
-      document.getElementById("data_conductor_BA").value = document.getElementById("data_conductor").value;
-      document.getElementById("data_conductor_BC").value = document.getElementById("data_conductor").value;
-      document.getElementById("data_conductor_G").value = document.getElementById("data_conductor").value;
-    }
-    function Copiar_DNI_C()
-    {
-      document.getElementById("id_person_conductor_BA").value = document.getElementById("id_person_conductor").value;
-      document.getElementById("id_person_conductor_BC").value = document.getElementById("id_person_conductor").value;
-      document.getElementById("id_person_conductor_G").value = document.getElementById("id_person_conductor").value;
-    }
-  </script>
-<p>
 <?php
-  if (!isset($cod_vehiculo))
-  {
-      $cod_vehiculo = "";
-  }
-  if (!isset($doc_person_afiliado))
-  {
-      $doc_person_afiliado = '';
-  }
-  if (!isset($doc_person_conductor))
-  {
-      $doc_person_conductor = '';
-  }
-  if (!isset($data_afiliado))
-  {
-      $data_afiliado = "";
-  }
-  if (!isset($id_person_afiliado))
-  {
-      $id_person_afiliado = "";
-  }
-  if (!isset($placa))
-  {
-      $placa = "";
-  }
-  if (!isset($data_conductor))
-  {
-      $data_conductor = "";
-  }
-  if (!isset($id_person_conductor))
-  {
-      $id_person_conductor = "";
-  }
-  if (isset($id_person_afiliado))
-  {
-    $doc_person_afiliado = $ci->getDocumento($id_person_afiliado);
-  }
-  if (isset($id_person_conductor))
-  {
-    $doc_person_conductor = $ci->getDocumento($id_person_conductor);
-  }
+$cod_vehiculo ??= $cod_vehiculo_G ?? '';
+$placa ??= $placa_G ?? '';
+$data_afiliado ??= $data_afiliado_G ?? '';
+$id_person_afiliado ??= $id_person_afiliado_G ?? '';
+$data_conductor ??= $data_conductor_G ?? '';
+$id_person_conductor ??= $id_person_conductor_G ?? '';
+$estadoActual = $estado ?? $estado_vehiculo ?? $estado_G ?? '';
+$valores = ['cod_vehiculo' => $cod_vehiculo, 'placa' => $placa, 'estado' => $estadoActual,
+    'data_afiliado' => $data_afiliado, 'id_person_afiliado' => $id_person_afiliado,
+    'data_conductor' => $data_conductor, 'id_person_conductor' => $id_person_conductor];
 ?>
-<form action="<?= base_url() ?>index.php/vehiculo/encontrar_afiliado" method="POST">
+<h2>Nuevo veh&iacute;culo</h2>
+<form data-async-form data-vehicle-form class="sistta-form-layout" action="<?= site_url('vehiculo/recepcionar_vehiculo') ?>" method="post">
 <?= csrf_field() ?>
-
-    <div class="form-group" >
-  <p>C&oacute;digo</p>
-    <input autocomplete="off" type="text" onkeypress="return AlphaNumeric(event)" required id="cod_vehiculo" name="cod_vehiculo" placeholder="C&oacute;digo de Vehiculo" value="<?= esc($cod_vehiculo) ?>" onkeyup="Copiar_CV();">
-  <br> <br>
-  <?php
-    if (isset($error_cod_vehiculo))
-    {
-      if ($error_cod_vehiculo != '')
-      {
-        echo "<h3>".$error_cod_vehiculo."</h3><br>";
-      }
-    }
-  ?>
-      <p>Afiliado</p>
-      <?php
-          if ($doc_person_afiliado == '')
-           echo "<p class='alert alert-danger'>No has asignado un Afiliado a&uacute;n</p>";
-          else
-          {
-            echo view('tablas/ficha_afiliado', ['filas' => $ci->ficha_afiliado($id_person_afiliado)]);
-          }
-      ?>
-      <p>Para Buscar/Asignar un Afiliado Ingrese el DNI o C&oacute;digo y de clic en: Buscar Afiliado</p>
-      <input autocomplete="off" type="text" onkeypress="return AlphaNumeric(event)" id="data_afiliado_BA" name="data_afiliado_BA" value="<?= esc($data_afiliado) ?>">
-            <input autocomplete="off" type="hidden" id="id_person_afiliado" name="id_person_afiliado" value="<?= esc($id_person_afiliado) ?>" onkeyup="Copiar_IP_A();">
-            <input autocomplete="off" type="hidden" id="cod_vehiculo_BA" name="cod_vehiculo_BA" value="<?= esc($cod_vehiculo) ?>">
-            <input autocomplete="off" type="hidden" id="id_person_afiliado_BA" name="id_person_afiliado_BA" value="<?= esc($id_person_afiliado) ?>">
-            <input autocomplete="off" type="hidden" id="placa_BA" name="placa_BA" value="<?= esc($placa) ?>">
-            <input autocomplete="off" type="hidden" id="estado_BA" name="estado_BA" value="<?php if (isset($estado_vehiculo)) echo esc($estado_vehiculo); ?>">
-            <input autocomplete="off" type="hidden" id="data_conductor_BA" name="data_conductor_BA" value="<?= esc($data_conductor) ?>">
-            <input autocomplete="off" type="hidden" id="id_person_conductor_BA" name="id_person_conductor_BA" value="<?= esc($id_person_conductor) ?>">
-      <input autocomplete="off" type="submit" name="buscar_afiliado" id="buscar_afiliado" value="Buscar Afiliado" />
-</form>
-  <form name="seleccionar_estado" action="<?= base_url() ?>index.php/vehiculo/encontrar_conductor" method="POST">
-<?= csrf_field() ?>
-
-  <h3>
-    <?php
-      if (isset($mensaje))
-      {
-        if ($mensaje != '')
-          echo " ".$mensaje." ";
-      }
-    ?>
-  </h3>
-<p>
-Placa:
-<br>
-  <input autocomplete="off" type="text" onkeypress="return AlphaNumeric(event)" name="placa" id="placa" placeholder="Placa del Veh&iacute;culo" value="<?= esc($placa) ?>" required onkeyup="Copiar_Placa();" />
-  <br>
-  <?php
-    if (isset($error_placa))
-    {
-      if ($error_placa != '')
-      {
-        echo "<h3>".$error_placa."</h3><br>";
-      }
-    }
-  ?>
-</p>
-
-
+<?php foreach (['BA', 'BC', 'G'] as $sufijo): ?>
+  <?php foreach ($valores as $campo => $valor): ?>
+  <input type="hidden" name="<?= esc($campo . '_' . $sufijo) ?>" value="<?= esc($valor) ?>">
+  <?php endforeach ?>
+<?php endforeach ?>
+<input data-vehicle-field type="hidden" name="id_person_afiliado" value="<?= esc($id_person_afiliado) ?>">
+<input data-vehicle-field type="hidden" name="id_person_conductor" value="<?= esc($id_person_conductor) ?>">
+<div class="sistta-form-grid">
   <div class="form-group">
-</p>
-<p>Estado
-    <p>
-      <?php
-        if (isset($estado_vehiculo))
-        {
-          if ($estado_vehiculo == '1')
-          {
-              echo "<p class='alert alert-danger'>Por precauci&oacute;n vuelva asignar el Estado del Veh&iacute;culo</p>";
-              echo "<p class='alert alert-danger'>&Uacute;ltimo Estado Seleccionado: Activo </p>";
-          }
-          if ($estado_vehiculo == '0')
-          {
-              echo "<p class='alert alert-danger'>Por precauci&oacute;n vuelva asignar el Estado del Veh&iacute;culo </p>";
-              echo "<p class='alert alert-danger'>Ultimo Estado Seleccionado: Inactivo </p>";
-          }
-        }
-      ?>
-<p>
-<input autocomplete="off" type="radio" required name="estado" value="1"
-        <?php
-          if (!isset($estado_vehiculo))
-          {
-            $estado_vehiculo = '';
-          }
-          if ($estado_vehiculo == '1')
-            echo 'ckecked';
-        ?>
-        onClick="Copiar_Estado();"
-        />
-        Activo
-      <input autocomplete="off" type="radio" required name="estado" value="0"
-        <?php
-          if (!isset($estado_vehiculo))
-          {
-            $estado_vehiculo = '';
-          }
-          if ($estado_vehiculo == '0')
-            echo 'ckecked';
-        ?>
-        onClick="Copiar_Estado();"
-       />
-      Inactivo</p>
-      <p>Conductor</p>
-        <?php
-            if ($doc_person_conductor == '')
-             echo "<p class='alert alert-danger'>No has asignado un Conductor a&uacute;n</p>";
-            else
-            {
-              echo view('tablas/ficha_conductor', ['filas' => $ci->ficha_conductor($id_person_conductor)]);
-            }
-        ?>
-        <p>Para Buscar/Asignar un conductor Ingrese el DNI, Brevete o C&oacute;digo y de clic en: Buscar Conductor</p>
-        <input autocomplete="off" type="text" onkeypress="return AlphaNumeric(event)" id="data_conductor_BC" name="data_conductor_BC" value="<?= esc($data_conductor) ?>">
-          <input autocomplete="off" name="id_person_conductor" type="hidden" id="id_person_conductor" placeholder="Buscar Conductor" readonly="readonly" value="<?= esc($id_person_conductor) ?>" onkeyup="Copiar_DNI_C();"/>
-          <input autocomplete="off" type="hidden" id="cod_vehiculo_BC" name="cod_vehiculo_BC" value="<?= esc($cod_vehiculo) ?>">
-          <input autocomplete="off" type="hidden" id="data_afiliado_BC" name="data_afiliado_BC" value="<?= esc($data_afiliado) ?>">
-          <input autocomplete="off" type="hidden" id="id_person_afiliado_BC" name="id_person_afiliado_BC" value="<?= esc($id_person_afiliado) ?>">
-          <input autocomplete="off" type="hidden" id="placa_BC" name="placa_BC" value="<?= esc($placa) ?>">
-          <input autocomplete="off" type="hidden" id="estado_BC" name="estado_BC" value="<?php if (isset($estado_vehiculo)) echo esc($estado_vehiculo); ?>" />
-          <input autocomplete="off" type="hidden" id="id_person_conductor_BC" name="id_person_conductor_BC" value="<?= esc($id_person_conductor) ?>">
-          <input autocomplete="off" type="submit" name="buscar_conductor" id="buscar_conductor" value="Buscar Conductor" />
-  <br>
-<p>
-  <?php
-      if (isset($mensaje2))
-      {
-        if ($mensaje2 != '')
-          echo " ".$mensaje2." ";
-      }
-    ?>
-  <br>
-</p>
+    <label for="cod_vehiculo">C&oacute;digo</label>
+    <input data-vehicle-field class="form-control" type="text" name="cod_vehiculo" id="cod_vehiculo" required value="<?= esc($cod_vehiculo) ?>" onkeypress="return AlphaNumeric(event)">
+    <?php if (!empty($error_cod_vehiculo)): ?><div class="sistta-field-error" role="alert"><?= $error_cod_vehiculo ?></div><?php endif ?>
+  </div>
+  <div class="form-group">
+    <label for="placa">Placa</label>
+    <input data-vehicle-field class="form-control" type="text" name="placa" id="placa" required value="<?= esc($placa) ?>" onkeypress="return AlphaNumeric(event)">
+    <?php if (!empty($error_placa)): ?><div class="sistta-field-error" role="alert"><?= $error_placa ?></div><?php endif ?>
+  </div>
+  <fieldset class="form-group sistta-span-all">
+    <legend>Estado</legend>
+    <div class="sistta-options">
+      <?php foreach (['1' => 'Activo', '0' => 'Inactivo'] as $valor => $texto): ?>
+      <label><input data-vehicle-field type="radio" name="estado" value="<?= $valor ?>" required <?= (string) $estadoActual === (string) $valor ? 'checked' : '' ?>><?= $texto ?></label>
+      <?php endforeach ?>
+    </div>
+  </fieldset>
+</div>
+<section class="sistta-form-section">
+  <h3>Afiliado propietario</h3>
+  <?php if ($id_person_afiliado !== ''): ?>
+    <?= view('tablas/ficha_afiliado', ['filas' => $ci->ficha_afiliado($id_person_afiliado)]) ?>
+  <?php else: ?><p class="help-block">Busca y asigna un afiliado antes de guardar.</p><?php endif ?>
+  <?php if (!empty($mensaje)): ?><div class="sistta-field-error" role="status"><?= $mensaje ?></div><?php endif ?>
+  <div class="sistta-search-field">
+    <div><label for="data_afiliado">DNI o c&oacute;digo del afiliado</label><input data-vehicle-field class="form-control" type="text" name="data_afiliado" id="data_afiliado" value="<?= esc($data_afiliado) ?>" onkeypress="return AlphaNumeric(event)"></div>
+    <button class="btn btn-default" type="submit" formnovalidate formaction="<?= site_url('vehiculo/encontrar_afiliado') ?>" name="buscar_afiliado" value="1">Buscar afiliado</button>
+  </div>
+</section>
+<section class="sistta-form-section">
+  <h3>Conductor <span class="text-muted">(opcional)</span></h3>
+  <?php if ($id_person_conductor !== ''): ?>
+    <?= view('tablas/ficha_conductor', ['filas' => $ci->ficha_conductor($id_person_conductor)]) ?>
+  <?php endif ?>
+  <?php if (!empty($mensaje2)): ?><div class="sistta-field-error" role="status"><?= $mensaje2 ?></div><?php endif ?>
+  <div class="sistta-search-field">
+    <div><label for="data_conductor">DNI, brevete o c&oacute;digo del conductor</label><input data-vehicle-field class="form-control" type="text" name="data_conductor" id="data_conductor" value="<?= esc($data_conductor) ?>" onkeypress="return AlphaNumeric(event)"></div>
+    <button class="btn btn-default" type="submit" formnovalidate formaction="<?= site_url('vehiculo/encontrar_conductor') ?>" name="buscar_conductor" value="1">Buscar conductor</button>
+  </div>
+</section>
+<div class="sistta-form-actions"><button class="btn btn-primary" type="submit" name="guardar_vehiculo" value="1">Guardar veh&iacute;culo</button></div>
 </form>
-<form action="<?= base_url() ?>index.php/vehiculo/recepcionar_vehiculo" method="POST">
-<?= csrf_field() ?>
-      <input autocomplete="off" type="hidden" id="cod_vehiculo_G" name="cod_vehiculo_G" value="<?= esc($cod_vehiculo) ?>">
-      <input autocomplete="off" type="hidden" id="data_afiliado_G" name="data_afiliado_G" value="<?= esc($data_afiliado) ?>">
-      <input autocomplete="off" type="hidden" id="id_person_afiliado_G" name="id_person_afiliado_G" value="<?= esc($id_person_afiliado) ?>">
-      <input autocomplete="off" type="hidden" id="placa_G" name="placa_G" value="<?= esc($placa) ?>">
-      <input autocomplete="off" type="hidden" id="estado_G" name="estado_G" value="<?php if (isset($estado_vehiculo)) echo esc($estado_vehiculo); ?>">
-      <input autocomplete="off" type="hidden" id="data_conductor_G" name="data_conductor_G" value="<?= esc($data_conductor) ?>">
-      <input autocomplete="off" type="hidden" id="id_person_conductor_G" name="id_person_conductor_G" value="<?= esc($id_person_conductor) ?>">
-      <input autocomplete="off" type="submit" name="guardar_vehiculo" id="guardar_vehiculo" value="Guardar" />
-</form>
-<?php
-  echo view('tablas/conductores_activos', ['conductores' => $ci->listar_conductores_activos()]);
-?>
+<section class="sistta-form-section">
+  <h3>Conductores activos</h3>
+  <?= view('tablas/conductores_activos', ['conductores' => $ci->listar_conductores_activos()]) ?>
+</section>

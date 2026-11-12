@@ -5,7 +5,7 @@
 <?php
   $documento = $ci->getDocumento($id_person_afi);
 ?>
-<form action="<?= base_url() ?>index.php/afiliado/guardar_agregar" method="POST" >
+<form data-async-form action="<?= base_url() ?>index.php/afiliado/guardar_agregar" method="POST" >
 <?= csrf_field() ?>
 <p>Documento:
   <input name="id_person_afi" type="hidden" id="id_person_afi" value="<?= esc($id_person_afi) ?>" readonly="readonly" />
@@ -40,7 +40,7 @@
 
 </form>
 
-<form action="<?= base_url() ?>index.php/afiliado" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/afiliado" method ="POST">
 <?= csrf_field() ?>
   <div align="center"> <input type="submit" name="no" id="no" value="No" /> </div>
 </form>

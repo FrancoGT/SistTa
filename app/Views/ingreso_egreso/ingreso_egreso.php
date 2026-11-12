@@ -5,8 +5,8 @@ $tipos = ['1' => 'Ingreso', '2' => 'Egreso'];
 <h1>Ingresos - Egresos</h1>
 <br>
 <h3>
-  <a class="btn btn-success" href="<?= site_url('ingreso_egreso/registrar_egreso') ?>"><i class="fa fa-money"></i> <i class="fa fa-plus"></i> Nuevo Gasto</a>
-  <a class="btn btn-success" href="<?= site_url('ingreso_egreso/registrar_ingreso') ?>"><i class="fa fa-money"></i> <i class="fa fa-plus"></i> Nuevo Ingreso</a>
+  <a data-form-modal class="btn btn-success" href="<?= site_url('ingreso_egreso/registrar_egreso') ?>"><i class="fa fa-money"></i> <i class="fa fa-plus"></i> Nuevo Gasto</a>
+  <a data-form-modal class="btn btn-success" href="<?= site_url('ingreso_egreso/registrar_ingreso') ?>"><i class="fa fa-money"></i> <i class="fa fa-plus"></i> Nuevo Ingreso</a>
 </h3>
 <br>
 <?php if (empty($operaciones)): ?>

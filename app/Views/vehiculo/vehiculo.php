@@ -10,7 +10,7 @@ if (!isset($vehiculos)) {
 <h1>Veh&iacute;culos</h1>
 <h3>
   <?php if (isset($mensaje)) { echo ' ' . $mensaje . ' '; } ?>
-  <a class="btn btn-info" href="<?= site_url('vehiculo/registrar_vehiculo') ?>"><i class="fa fa-car"></i> <i class="fa fa-plus"></i> Nuevo Veh&iacute;culo</a>
+  <a data-form-modal class="btn btn-info" href="<?= site_url('vehiculo/registrar_vehiculo') ?>"><i class="fa fa-car"></i> <i class="fa fa-plus"></i> Nuevo Veh&iacute;culo</a>
 </h3>
 <?php if (!$hay_registros): ?>
   <p class="alert alert-danger">No hay registros de veh&iacute;culos a&uacute;n</p>
@@ -33,7 +33,7 @@ if (!isset($vehiculos)) {
         <td><?= esc($v->propietarios) ?></td>
         <td><?= $v->estado_vehiculo == 1 ? 'Activo' : 'Inactivo' ?></td>
         <td class="dt-acciones">
-          <a class="btn btn-info" href="<?= site_url('vehiculo/actualizar_vehiculo/' . esc($v->id_vehiculo, 'url')) ?>" title="Actualizar Veh&iacute;culo"><i class="fa fa-refresh"></i> <i class="fa fa-car"></i></a>
+          <a data-form-modal class="btn btn-info" href="<?= site_url('vehiculo/actualizar_vehiculo/' . esc($v->id_vehiculo, 'url')) ?>" title="Actualizar Veh&iacute;culo"><i class="fa fa-refresh"></i> <i class="fa fa-car"></i></a>
         </td>
       </tr>
       <?php endforeach ?>

@@ -1,6 +1,6 @@
 <h1>Actualizar Veh&iacute;culo</h1>
 
-<form action="<?= base_url() ?>index.php/afiliado/encontrar_vehiculo" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/afiliado/encontrar_vehiculo" method ="POST">
 <?= csrf_field() ?>
 <h3> <?php echo 'Afiliado: '.esc($nombre_afi); ?></h3>
 <br> </br>

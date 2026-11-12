@@ -1,170 +1,51 @@
-<script type="text/javascript">
-  function Guardar_Afiliado()
-  {
-    if (document.getElementById("nuevo_afiliado").value == 0)
-    {
-      document.getElementById("nuevo_afiliado").value = 1;
-    }
-    else
-    {
-      document.getElementById("nuevo_afiliado").value = 0;
-    }
-  }
-  function Copiar_Doc()
-  {
-    document.getElementById("doc_copia").value = document.getElementById("documento").value;
-    var dni = document.getElementById("documento").value;
-  }
-</script>
 <?php
-  if (!isset($cod_conductor))
-  {
-    $cod_conductor = "";
-  }
-  if (!isset($brevete))
-  {
-    $brevete = "";
-  }
-  if (!isset($nombre_persona))
-  {
-    $nombre_persona = "";
-  }
-  if (!isset($documento))
-  {
-    $documento = "";
-  }
-  if (!isset($direccion))
-  {
-    $direccion = "";
-  }
-  if (!isset($telefono_persona))
-  {
-    $telefono_persona = "";
-  }
-
-  if (!isset($afiliado_es) && $documento == '')
-  {
-    $afiliado_es = '';
-  }
-  if (!isset($afiliado_es) && $documento != '')
-  {
-    $afiliado_es = $ci->es_afiliado($documento);
-  }
+$estadoActual = $estado ?? $estado_nuevo ?? $estado_conductor ?? '';
+$afiliado_es ??= (!empty($documento) ? $ci->es_afiliado($documento) : '');
+$campos = [
+    ['cod_conductor', 'C&oacute;digo', $cod_conductor ?? '', 'AlphaNumeric', 'error_cod_conductor'],
+    ['documento', 'DNI', $documento ?? '', 'isNumberKey', 'error_documento'],
+    ['brevete', 'Brevete', $brevete ?? '', 'AlphaNumeric', 'error_brevete'],
+    ['nombre_persona', 'Nombre completo', $nombre_persona ?? '', 'ValidateAlpha', ''],
+    ['telefono_persona', 'Tel&eacute;fono', $telefono_persona ?? '', 'isNumberKey', 'error_telefono'],
+    ['direccion', 'Direcci&oacute;n', $direccion ?? '', 'AlphaNumeric', ''],
+];
 ?>
-<h1>Registrar Nuevo Conductor</h1>
-<?php echo form_open_multipart('conductor/guardar_conductor');?>
-  <div class="form-group">
-      <p>C&oacute;digo</p><br>
-      <input autocomplete="off" type="text" onkeypress="return AlphaNumeric(event)" required id="cod_conductor" name="cod_conductor" placeholder="Codigo de Conductor" value="<?= esc($cod_conductor) ?>">
-      <?php
-        if (isset($error_cod_conductor))
-        {
-          if ($error_cod_conductor != '')
-          {
-            echo "<h3>".$error_cod_conductor."</h3><br>";
-          }
-        }
-      ?>
-  </div>
+<h2>Nuevo conductor</h2>
+<?= form_open_multipart('conductor/guardar_conductor', ['data-async-form' => '', 'class' => 'sistta-form-layout', 'name' => 'nuevo_conductor']) ?>
 
-   <div class="form-group">
-      <p>DNI</p><br>
-      <input autocomplete="off" type="text" onkeypress="return isNumberKey(event)" required id="documento" name="documento" placeholder="DNI de Conductor" value="<?= esc($documento) ?>" onkeyup="Copiar_Doc();">
-      <?php
-        if (isset($error_documento))
-        {
-          if ($error_documento != '')
-          {
-            echo "<h3>".$error_documento."</h3><br>";
-          }
-        }
-      ?>
+<input type="hidden" name="deuda" value="<?= esc($deuda ?? '') ?>">
+<input type="hidden" name="nuevo_afiliado" value="<?= esc($nuevo_afiliado ?? '0') ?>">
+<div class="sistta-form-grid">
+<?php foreach ($campos as [$campo, $etiqueta, $valor, $filtro, $error]): ?>
+  <div class="form-group">
+    <label for="<?= esc($campo) ?>"><?= $etiqueta ?></label>
+    <input class="form-control" type="text" id="<?= esc($campo) ?>" name="<?= esc($campo) ?>" required autocomplete="off" value="<?= esc($valor) ?>" onkeypress="return <?= esc($filtro) ?>(event)">
+    <?php if ($error !== '' && !empty($$error)): ?><div class="sistta-field-error" role="alert"><?= $$error ?></div><?php endif ?>
+  </div>
+<?php endforeach ?>
+  <div class="form-group sistta-span-all">
+    <label for="userfile">Foto del conductor</label>
+    
+    <input class="form-control" type="file" id="userfile" name="userfile" accept="image/gif,image/jpeg,image/png">
+    <?php if (!empty($error_arhivo)): ?><div class="sistta-field-error" role="alert"><?= $error_arhivo ?></div><?php endif ?>
+  </div>
+  <fieldset class="form-group">
+    <legend>Estado</legend>
+    <div class="sistta-options">
+      <?php foreach (['1' => 'Activo', '0' => 'Inactivo'] as $valor => $texto): ?>
+      <label><input type="radio" name="estado" value="<?= $valor ?>" required <?= (string) $estadoActual === (string) $valor ? 'checked' : '' ?> ><?= $texto ?></label>
+      <?php endforeach ?>
     </div>
+  </fieldset>
   <div class="form-group">
-    <p>Brevete</p>
-      <br>
-      <input autocomplete="off" type="text" onkeypress="return AlphaNumeric(event)" required id="brevete" name="brevete" placeholder="Brevete del conductor" value="<?= esc($brevete) ?>">
-      <?php
-        if (isset($error_brevete))
-        {
-          echo $error_brevete;
-        }
-      ?>
+    <span class="sistta-field-label">Afiliaci&oacute;n</span>
+    <?php if ((string) $afiliado_es === '1'): ?>
+      <p class="help-block">Este conductor ya est&aacute; registrado como afiliado.</p>
+    <?php else: ?>
+      <div class="sistta-options"><label><input type="checkbox" name="es_afiliado" value="1" <?= !empty($nuevo_afiliado) ? 'checked' : '' ?> onchange="this.form.elements.nuevo_afiliado.value=this.checked ? '1' : '0'"> Registrar tambi&eacute;n como afiliado</label></div>
+    <?php endif ?>
+    <?php if (!empty($error_afiliado)): ?><div class="sistta-field-error" role="alert"><?= $error_afiliado ?></div><?php endif ?>
   </div>
-  <div class="form-group">
-    <p>Nombre</p>
-      <br>
-      <input autocomplete="off" type="text" onkeypress="return ValidateAlpha(event)" required id="nombre_persona" name="nombre_persona" placeholder="Nombre de Conductor" value="<?= esc($nombre_persona) ?>">
-    </div>
-    <p>Foto del Conductor:</p>
-    <input requiered type="file" accept="image/gif,image/jpeg,image/png" id="userfile" name="userfile" size="20" />
-    <?php
-      if (isset($error_arhivo))
-      echo $error_arhivo;
-    ?>
-    <br /><br />
-
-  <div class="form-group">
-      <p>Direcci&oacute;n</p>
-      <br>
-    <input autocomplete="off" type="text" onkeypress="return AlphaNumeric(event)" required id="direccion" name="direccion" placeholder="Direccion de Conductor" value="<?= esc($direccion) ?>">
-  </div>
-
-
-<div class="form-group">
-    <p>Tel&eacute;fono</p>
-    <br>
-    <input autocomplete="off" type="text" onkeypress="return isNumberKey(event)" required id="telefono_persona" name="telefono_persona" placeholder="Telefono de Conductor" value="<?= esc($telefono_persona) ?>">
-    </div>
-    <?php
-      if (isset($error_telefono))
-      {
-        if ($error_telefono != '')
-        {
-          echo "<h3>".$error_telefono."</h3><br>";
-        }
-      }
-    ?>
-<div class="form-group">
-
-    <br>
-    <input autocomplete="off" type="hidden" id="deuda" name="deuda" readonly="readonly">
-    </div>
-
-  <div class="form-group">
-    <p>
-    <p>Estado</p>
-    <p>
-    <input autocomplete="off" type="radio" required name="estado" value="1" id="estado" /> Activo</p>
-        <p>
-          <input autocomplete="off" type="radio" required name="estado" value="0" id="estado" />
-          Inactivo</p>
-    </p>
-
-  <div class="form-group">
-    <?php
-      if ($afiliado_es == '1')
-      {
-        echo "<h3>Este Conductor ya fue registrado como Afiliado tambi&eacute;n</h3><br>";
-        echo "<element hidden>";
-      }
-      else
-      {
-        echo "<h3>Si el Nuevo Conductor ya fue registrado como Afiliado <br> No es necesario marcar la casilla de abajo </h3>";
-        echo "<P>Es afiliado?";
-      }
-    ?>
-      <input autocomplete="off" type="checkbox" id="es_afiliado" name="es_afiliado" value="1" onclick="Guardar_Afiliado();">
-      <br>
-      <?php
-        if ($afiliado_es == '1')
-        {
-          echo "</element>";
-        }
-      ?>
-      </P>
-  </div>
-    <input autocomplete="off" type="hidden" name="nuevo_afiliado" id="nuevo_afiliado" value="0" />
-    <input autocomplete="off" type="submit" name="guardar_conductor" id="guardar_conductor" value="Guardar Conductor">
-  </div>
+</div>
+<div class="sistta-form-actions"><button class="btn btn-primary" type="submit" name="guardar_conductor" value="1">Guardar conductor</button></div>
 </form>

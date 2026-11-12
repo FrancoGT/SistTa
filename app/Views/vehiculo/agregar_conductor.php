@@ -1,6 +1,6 @@
 <h1>Agregar Conductor</h1>
 <br>
-<form action="<?= base_url() ?>index.php/vehiculo/encontrar_conductor_add" method="POST">
+<form data-async-form action="<?= base_url() ?>index.php/vehiculo/encontrar_conductor_add" method="POST">
 <?= csrf_field() ?>
   <p>Ingrese DNI o C&oacute;digo de Conductor</p>
   <p>

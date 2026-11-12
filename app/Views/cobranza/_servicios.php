@@ -13,7 +13,7 @@ $titulo ??= '';
     <h3><?= $titulo ?></h3>
   <?php endif ?>
   <p>
-    <a class="btn btn-info" href="<?= esc($bloque['agregar_url'], 'attr') ?>" title="Agregar Servicio"><i class="fa fa-th-list"></i> <i class="fa fa-plus"></i> Agregar Servicio</a>
+    <a data-form-modal class="btn btn-info" href="<?= esc($bloque['agregar_url'], 'attr') ?>" title="Agregar Servicio"><i class="fa fa-th-list"></i> <i class="fa fa-plus"></i> Agregar Servicio</a>
   </p>
 
   <?php if ($bloque['servicios'] === []): ?>
@@ -50,7 +50,7 @@ $titulo ??= '';
               <span class="label label-success">Cancelado</span>
             <?php endif ?>
             <?php foreach ($p['acciones'] as $accion): ?>
-              <a class="btn <?= $accion['clase'] ?>" href="<?= esc($accion['url'], 'attr') ?>" title="<?= esc($accion['texto'], 'attr') ?>">
+              <a data-form-modal class="btn <?= $accion['clase'] ?>" href="<?= esc($accion['url'], 'attr') ?>" title="<?= esc($accion['texto'], 'attr') ?>">
                 <?php if (isset($accion['icono'])): ?><i class="fa fa-plus"></i> <i class="fa <?= $accion['icono'] ?>"></i><?php endif ?>
                 <?= esc($accion['texto']) ?>
               </a>

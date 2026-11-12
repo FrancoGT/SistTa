@@ -7,7 +7,7 @@
 		$value = '';
 	}
 ?>
-<form action="<?= base_url() ?>index.php/cobranza/buscar_cobranza_detalle_afiliado" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/cobranza/buscar_cobranza_detalle_afiliado" method ="POST">
 <?= csrf_field() ?>
     <table class='table table-bordered table-hover'>
 			<tr>
@@ -33,7 +33,7 @@
   </tr>
   </form>
 
-<form action="<?= base_url() ?>index.php/cobranza/buscar_cobranza_detalle_conductor" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/cobranza/buscar_cobranza_detalle_conductor" method ="POST">
 <?= csrf_field() ?>
   <tr>
     <td>Conductor</td>
@@ -49,7 +49,7 @@
     </div>
   </tr>
 </form>
-<form action="<?= base_url() ?>index.php/cobranza/buscar_cobranza_detalle_vehiculo" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/cobranza/buscar_cobranza_detalle_vehiculo" method ="POST">
 <?= csrf_field() ?>
   <tr>
 		<tr>
@@ -71,11 +71,14 @@
 <script>
   function updateInput(inputElem, criterion, info, disabledElems) 
   {
-    inputElem.disabled = info != "";
+    info = info.trim();
+    // Solo se bloquean los otros campos/botones; el campo en uso debe seguir editable
     disabledElems.forEach(function(disabledElem) {
       disabledElem.disabled = info != "";
     });
-    document.getElementById("info_" + inputElem.id.split("_")[1]).value = info.concat(criterion);
+    // El hidden de cada formulario es info_afiliado / info_conductor / info_vehiculo
+    var hidden = inputElem.form.querySelector('input[type="hidden"][name^="info_"]');
+    hidden.value = info != "" ? info.concat(criterion) : "";
   }
 
   var inputElems = [  {elem: document.getElementById("bus_dni_afi"), criterion: "~documento", disabledElems: [document.getElementById("bus_cod_afi"), document.getElementById("bus_dni_con"), document.getElementById("bus_cod_con"), document.getElementById("bus_placa_vehi"), document.getElementById("bus_cod_vehi"), document.getElementById("bus_conductor"), document.getElementById("bus_vehiculo")]},

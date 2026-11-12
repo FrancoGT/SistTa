@@ -1,58 +1,29 @@
-<h1>Actualizar Veh&iacute;culo</h1>
-<br>
-<form action="<?= base_url() ?>index.php/vehiculo/actualizar_datos" method="POST">
+<?php $estadoActual = $estado ?? $ci->get_estado_actual($id_vehiculo); ?>
+<h2>Actualizar veh&iacute;culo</h2>
+<form data-async-form class="sistta-form-layout" action="<?= site_url('vehiculo/actualizar_datos') ?>" method="post">
 <?= csrf_field() ?>
-  <input type="hidden" required autocomplete="off" id="id_vehiculo" name="id_vehiculo" placeholder="C&oacute;digo de Vehiculo" value="<?= esc($id_vehiculo) ?>" >
-  <div class="form-group" >
-  <p>C&oacute;digo</p>
-  <input type="text" onkeypress="return AlphaNumeric(event)" required autocomplete="off" id="cod_vehiculo" name="cod_vehiculo" placeholder="C&oacute;digo de Vehiculo" value="<?= esc($cod_vehiculo) ?>" >
-  <br> <br>
-  <?php
-    if (isset($error_cod_vehiculo))
-    {
-      if ($error_cod_vehiculo != '')
-      {
-        echo "<h3>".$error_cod_vehiculo."</h3><br>";
-      }
-    }
-  ?>
-  <p>Placa:</p>
-
-    <input type="text" onkeypress="return AlphaNumeric(event)" required autocomplete="off"  name="placa" id="placa" value="<?= esc($placa) ?>"/> <br>
-    <?php
-      if (isset($error_placa))
-      {
-        if ($error_placa != '')
-        {
-          echo "<h3>".$error_placa."</h3><br>";
-        }
-      }
-    ?>
-    <input type="hidden" name="id_vehiculo" id="id_vehiculo" value="<?= esc($id_vehiculo) ?>"/>
-<br>
-  <p>
-    Estado Actual:
-    <?php
-      $estado_vehiculo = $ci->get_estado_actual($id_vehiculo);
-      if ($estado_vehiculo == '1')
-        echo "Activo<br>";
-      if ($estado_vehiculo == '0')
-        echo "Inactivo";
-    ?>
-  </p>
-  <h3>Para Actualizar Datos Actuales, confirmar el Estado del Veh&iacute;culo</h3>
-  <p>
-    <p>
-      <input type="radio" required autocomplete="off" name="estado" value="1" id="estado_0" />
-    Activo</p>
-    <br />
-    <p>
-      <input type="radio" name="estado" value="0" id="estado_1" />
-      Inactivo</p>
-    <br />
-  </p>
-        </p>
-  <input type="submit" name="button" id="button" value="Actualizar Vehículo" />
+<input type="hidden" name="id_vehiculo" value="<?= esc($id_vehiculo) ?>">
+<div class="sistta-form-grid">
+  <div class="form-group">
+    <label for="cod_vehiculo">C&oacute;digo</label>
+    <input class="form-control" type="text" id="cod_vehiculo" name="cod_vehiculo" required autocomplete="off" value="<?= esc($cod_vehiculo) ?>" onkeypress="return AlphaNumeric(event)">
+    <?php if (!empty($error_cod_vehiculo)): ?><div class="sistta-field-error" role="alert"><?= $error_cod_vehiculo ?></div><?php endif ?>
+  </div>
+  <div class="form-group">
+    <label for="placa">Placa</label>
+    <input class="form-control" type="text" id="placa" name="placa" required autocomplete="off" value="<?= esc($placa) ?>" onkeypress="return AlphaNumeric(event)">
+    <?php if (!empty($error_placa)): ?><div class="sistta-field-error" role="alert"><?= $error_placa ?></div><?php endif ?>
+  </div>
+  <fieldset class="form-group sistta-span-all">
+    <legend>Estado</legend>
+    <div class="sistta-options">
+      <?php foreach (['1' => 'Activo', '0' => 'Inactivo'] as $valor => $texto): ?>
+      <label><input type="radio" name="estado" value="<?= $valor ?>" required <?= (string) $estadoActual === (string) $valor ? 'checked' : '' ?>><?= $texto ?></label>
+      <?php endforeach ?>
+    </div>
+  </fieldset>
+</div>
+<div class="sistta-form-actions"><button class="btn btn-primary" type="submit" name="button" value="1">Guardar cambios</button></div>
 </form>
 
 <?php
@@ -82,7 +53,7 @@
 <?php foreach ($grupos as $g): ?>
   <h3><?= $g['titulo'] ?></h3>
   <p>
-    <a class="btn btn-info" href="<?= site_url($g['agregar'][0] . esc($id_vehiculo, 'url')) ?>" title="<?= $g['agregar'][1] ?>"><?= $g['agregar'][1] ?> <i class="ion ion-person-add"></i></a>
+    <a data-form-modal class="btn btn-info" href="<?= site_url($g['agregar'][0] . esc($id_vehiculo, 'url')) ?>" title="<?= $g['agregar'][1] ?>"><?= $g['agregar'][1] ?> <i class="ion ion-person-add"></i></a>
   </p>
   <?php if (empty($g['filas'])): ?>
     <p class="alert alert-danger"><?= $g['vacio'] ?></p>
@@ -102,8 +73,8 @@
           <td><?= esc($r->documento) ?></td>
           <td><?= esc($r->nombre_persona) ?></td>
           <td class="dt-acciones">
-            <a class="btn btn-info" href="<?= site_url($g['cambiar'][0] . $referencia) ?>" title="<?= $g['cambiar'][1] ?>"><i class="fa fa-male"></i> &#8644; <i class="fa fa-male"></i></a>
-            <a class="btn btn-danger" href="<?= site_url($g['eliminar'][0] . $referencia) ?>" title="<?= $g['eliminar'][1] ?>"><i class="fa fa-male"></i> <i class="fa fa-close"></i></a>
+            <a data-form-modal class="btn btn-info" href="<?= site_url($g['cambiar'][0] . $referencia) ?>" title="<?= $g['cambiar'][1] ?>"><i class="fa fa-male"></i> &#8644; <i class="fa fa-male"></i></a>
+            <a data-form-modal class="btn btn-danger" href="<?= site_url($g['eliminar'][0] . $referencia) ?>" title="<?= $g['eliminar'][1] ?>"><i class="fa fa-male"></i> <i class="fa fa-close"></i></a>
           </td>
         </tr>
         <?php endforeach ?>

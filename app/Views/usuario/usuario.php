@@ -6,7 +6,7 @@ $tipos = ['1' => 'Administrador', '2' => 'Secretaria'];
 <h1>Usuarios</h1>
 <h3>
   <?php if (isset($mensaje)) { echo ' ' . $mensaje . ' '; } ?>
-  <a class="btn btn-info" href="<?= site_url('usuario/registrar_usuario') ?>"><i class="ion ion-person-add"></i> Nuevo Usuario</a>
+  <a data-form-modal class="btn btn-info" href="<?= site_url('usuario/registrar_usuario') ?>"><i class="ion ion-person-add"></i> Nuevo Usuario</a>
 </h3>
 <?php if (empty($usuarios)): ?>
   <p class="alert alert-danger">No hay usuarios registrados</p>
@@ -31,7 +31,7 @@ $tipos = ['1' => 'Administrador', '2' => 'Secretaria'];
         <td><?= $tipos[(string) $u->tipo] ?? '' ?></td>
         <td><?= $u->estado_usuario == 1 ? 'Activo' : 'Inactivo' ?></td>
         <td class="dt-acciones">
-          <a class="btn btn-info" href="<?= site_url('usuario/actualizar_usuario/' . esc($u->id_user, 'url')) ?>" title="Actualizar Usuario"><i class="fa fa-refresh"></i> <i class="fa fa-male"></i></a>
+          <a data-form-modal class="btn btn-info" href="<?= site_url('usuario/actualizar_usuario/' . esc($u->id_user, 'url')) ?>" title="Actualizar Usuario"><i class="fa fa-refresh"></i> <i class="fa fa-male"></i></a>
         </td>
       </tr>
       <?php endforeach ?>

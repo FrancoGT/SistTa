@@ -14,7 +14,7 @@
 
 		<p>¿Desea asignarlo?
 		<p>
-		<form action="<?= base_url() ?>index.php/vehiculo/confirmar_nuevo_conductor_si" method="POST">
+		<form data-async-form action="<?= base_url() ?>index.php/vehiculo/confirmar_nuevo_conductor_si" method="POST">
 <?= csrf_field() ?>
 			 <input type="hidden" id="id_person_si" name="id_person_si" value="<?= esc($id_person) ?>">
 			 <input type="hidden" id="id_vehiculo_si" name="id_vehiculo_si" value="<?= esc($id_vehiculo) ?>">
@@ -22,7 +22,7 @@
   	 <input type="submit" name="Si" id="Si" value="Si" />
 		</form>
 		<br>
-		<form action="<?= base_url() ?>index.php/vehiculo/confirmar_nuevo_conductor_no" method="POST">
+		<form data-async-form action="<?= base_url() ?>index.php/vehiculo/confirmar_nuevo_conductor_no" method="POST">
 <?= csrf_field() ?>
 			<input type="hidden" id="id_person_no" name="id_person_no" value="<?= esc($id_person) ?>">
 			<input type="hidden" id="id_vehiculo_no" name="id_vehiculo_no" value="<?= esc($id_vehiculo) ?>">

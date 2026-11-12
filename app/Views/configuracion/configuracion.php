@@ -1,6 +1,6 @@
 <h1>Configuraci&oacute;n</h1>
 <br>
-<form action="<?= base_url() ?>index.php/configuracion/actualizar_configuracion" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/configuracion/actualizar_configuracion" method ="POST">
 <?= csrf_field() ?>
 <?php
   if (!isset($empresa) ||
@@ -37,7 +37,7 @@
 </form>
 <h1>Servicios</h1>
 <br>
-<a class="btn btn-info" href="<?= base_url() ?>index.php/configuracion/registrar_servicio" ><i class="fa fa-th-list"></i> <i class="fa fa-plus"></i> Agregar Servicio</a>
+<a data-form-modal class="btn btn-info" href="<?= base_url() ?>index.php/configuracion/registrar_servicio" ><i class="fa fa-th-list"></i> <i class="fa fa-plus"></i> Agregar Servicio</a>
 <br>
 <br>
 <?php
@@ -72,11 +72,11 @@
         <td><?= $s->estado_servicio == 1 ? 'Activo' : 'Inactivo' ?></td>
         <td data-search="<?= esc($aplica_txt) ?>" data-order="<?= esc($aplica_txt) ?>">
           <?php if ($aplica_ruta !== null): ?>
-            <a class="btn btn-info" href="<?= site_url($aplica_ruta . esc($s->id_servicio, 'url')) ?>" title="Aplicar a <?= esc($aplica_txt) ?>"><?= esc($aplica_txt) ?></a>
+            <a data-form-modal class="btn btn-info" href="<?= site_url($aplica_ruta . esc($s->id_servicio, 'url')) ?>" title="Aplicar a <?= esc($aplica_txt) ?>"><?= esc($aplica_txt) ?></a>
           <?php endif ?>
         </td>
         <td class="dt-acciones">
-          <a class="btn btn-info" href="<?= site_url('configuracion/actualizar_servicio/' . esc($s->id_servicio, 'url')) ?>" title="Actualizar Servicio"><i class="fa fa-refresh"></i> <i class="fa fa-th-list"></i></a>
+          <a data-form-modal class="btn btn-info" href="<?= site_url('configuracion/actualizar_servicio/' . esc($s->id_servicio, 'url')) ?>" title="Actualizar Servicio"><i class="fa fa-refresh"></i> <i class="fa fa-th-list"></i></a>
         </td>
       </tr>
       <?php endforeach ?>

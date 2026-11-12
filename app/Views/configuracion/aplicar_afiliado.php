@@ -1,6 +1,6 @@
 <h1>Aplicar a Afiliado el Servicio</h1>
 <br>
-<form action="<?= base_url() ?>index.php/configuracion/encontrar_afiliado" method="POST">
+<form data-async-form action="<?= base_url() ?>index.php/configuracion/encontrar_afiliado" method="POST">
 <?= csrf_field() ?>
 <h3> <?php echo '&nbsp;&nbsp;Nombre del Servicio: '.esc($nombre_serv); ?> </h3>
 <br>
