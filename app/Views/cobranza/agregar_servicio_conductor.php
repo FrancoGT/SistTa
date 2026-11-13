@@ -1,16 +1,19 @@
 <h1>Agregar Servicio</h1>
-<br>
-<form data-async-form name="asignar_servicio" action="<?= base_url() ?>index.php/cobranza/encontrar_servicio_conductor" method ="POST">
-<?= csrf_field() ?>
-<h3> Buscar Servicio </h3>
-<br>
-<p>Nombre del Servicio:
-  <label for="data_servicio"></label>
-  <input type="hidden" name="id_person_conductor" id="id_person_conductor" value="<?= esc($id_person_conductor) ?>"/>
-  <input type="text" autocomplete="off" onkeypress="return AlphaNumeric(event)" name="data_servicio" id="data_servicio" />
-</p>
-<p>
-  <input type="submit" name="Buscar" id="Buscar" value="Buscar Servicio" />
-</p>
-<p>&nbsp; </p>
+<form data-async-form action="<?= site_url('cobranza/encontrar_servicio_conductor') ?>" method="post">
+  <?= csrf_field() ?>
+  <input type="hidden" name="id_person_conductor" value="<?= esc($id_person_conductor, 'attr') ?>">
+  <?php if ($servicios === []): ?>
+    <p class="alert alert-warning">No hay servicios activos para este tipo de persona. Registra o activa un servicio en Configuraci&oacute;n.</p>
+  <?php else: ?>
+    <div class="form-group">
+      <label for="data_servicio">Servicio</label>
+      <select class="form-control" name="data_servicio" id="data_servicio" required>
+        <option value="">Selecciona un servicio</option>
+        <?php foreach ($servicios as $servicio): ?>
+          <option value="<?= esc($servicio->nombre_servicio, 'attr') ?>"><?= esc($servicio->nombre_servicio) ?></option>
+        <?php endforeach ?>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Continuar</button>
+  <?php endif ?>
 </form>

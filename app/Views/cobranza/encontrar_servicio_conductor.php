@@ -27,7 +27,7 @@
 </p>
 </form>
 
-<form data-async-form action="<?= base_url() ?>index.php/configuracion" method ="POST">
+<form data-async-form action="<?= base_url() ?>index.php/cobranza" method ="POST">
 <?= csrf_field() ?>
   <div align="center"> <input type="submit" name="no" id="no" value="No" /> </div>
 </form>

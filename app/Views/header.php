@@ -17,7 +17,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gesti&oacute;n de Flotilla</title>
-  <link rel="icon" href="<?= base_url('favicon.ico') ?>">
+  <link rel="icon" type="image/x-icon" href="<?= base_url('favicon.ico'); ?>">
 
   <!-- Bootstrap 3.3.7 + AdminLTE 2.4.5 (solo skin-blue) + iconos -->
   <link rel="stylesheet" href="<?= $assets ?>bower_components/bootstrap/dist/css/bootstrap.min.css">

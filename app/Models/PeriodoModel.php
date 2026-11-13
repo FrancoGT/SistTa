@@ -8,6 +8,9 @@ class PeriodoModel extends Model
 {
     public function guardar($data)
     {
+        if (isset($data['id_periodo']) && $data['id_periodo'] === '') {
+            unset($data['id_periodo']);
+        }
         $this->db->table('tbl_periodo_pago')->insert($data);
 
         return $this->db->insertID();

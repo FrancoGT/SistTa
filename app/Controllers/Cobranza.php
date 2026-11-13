@@ -243,7 +243,8 @@ class Cobranza extends BaseController
     $datos_afiliado = array(
         "id_person_afiliado" => ""
     );
-    $buscar = $this->db->query('SELECT a.id_person_afiliado FROM tbl_persona as p LEFT JOIN tbl_afiliado as a ON p.id_persona=a.id_person_afiliado WHERE ' . sql_ident($table) . '.' . sql_ident($criterio) . ' = ? AND a.estado_afiliado=1', [$data_afiliado]);
+    // Un registro inactivo puede conservar deudas pendientes de cobranza.
+    $buscar = $this->db->query('SELECT a.id_person_afiliado FROM tbl_persona as p INNER JOIN tbl_afiliado as a ON p.id_persona=a.id_person_afiliado WHERE ' . sql_ident($table) . '.' . sql_ident($criterio) . ' = ?', [$data_afiliado]);
     foreach ($buscar->getResult() as $key)
     {
       $datos_afiliado['id_person_afiliado'] = str_replace('"','',json_encode($key->id_person_afiliado));
@@ -271,7 +272,7 @@ class Cobranza extends BaseController
     $datos_vehiculo = array(
         "id_vehiculo" => ""
     );
-    $buscar = $this->db->query('SELECT id_vehiculo, cod_vehiculo, placa FROM tbl_vehiculo WHERE ' . sql_ident($criterio) . ' = ? AND estado_vehiculo=1', [$data_vehiculo]);
+    $buscar = $this->db->query('SELECT id_vehiculo, cod_vehiculo, placa FROM tbl_vehiculo WHERE ' . sql_ident($criterio) . ' = ?', [$data_vehiculo]);
     foreach ($buscar->getResult() as $key)
     {
       $datos_vehiculo['id_vehiculo'] = str_replace('"','',json_encode($key->id_vehiculo));
@@ -340,11 +341,11 @@ class Cobranza extends BaseController
     $buscar = '';
     if ($criterio == 'cod_conductor')
     {
-      $buscar = $this->db->query('SELECT c.id_person_conductor FROM tbl_persona as p LEFT JOIN tbl_conductor as c ON p.id_persona=c.id_person_conductor WHERE c.cod_conductor =? AND c.estado_conductor=1', [$data_conductor]);
+      $buscar = $this->db->query('SELECT c.id_person_conductor FROM tbl_persona as p INNER JOIN tbl_conductor as c ON p.id_persona=c.id_person_conductor WHERE c.cod_conductor =?', [$data_conductor]);
     }
     if ($criterio == 'documento')
     {
-      $buscar = $this->db->query('SELECT c.id_person_conductor FROM tbl_persona as p LEFT JOIN tbl_conductor as c ON p.id_persona=c.id_person_conductor WHERE p.documento =? AND c.estado_conductor=1', [$data_conductor]);
+      $buscar = $this->db->query('SELECT c.id_person_conductor FROM tbl_persona as p INNER JOIN tbl_conductor as c ON p.id_persona=c.id_person_conductor WHERE p.documento =?', [$data_conductor]);
     }
     if ($buscar != '')
     {
@@ -360,15 +361,15 @@ class Cobranza extends BaseController
   public function buscar_cobranza_detalle_afiliado()
   {
     $busquedas = false;
-    $Afiliado_No_Encontrado = array(
-        'id_person_afiliado' => ''
-    );
     $form = $this->request->getPost();
-    $info = (string) ($form['info_afiliado'] ?? '');
-    if ($this->buscar_afiliado($info) != $Afiliado_No_Encontrado)
+    $info = isset($form['valor_busqueda'], $form['criterio_busqueda'])
+      ? trim((string) $form['valor_busqueda']) . '~' . (string) $form['criterio_busqueda']
+      : (string) ($form['info_afiliado'] ?? '');
+    $encontrado = $this->buscar_afiliado($info);
+    if ($encontrado['id_person_afiliado'] !== '')
     {
       $busquedas = true;
-      $this->ElegirVista('Afiliado', $this->buscar_afiliado($info));
+      $this->ElegirVista('Afiliado', $encontrado);
     }
     if (!$busquedas)
     {
@@ -385,20 +386,20 @@ class Cobranza extends BaseController
   public function buscar_cobranza_detalle_conductor()
   {
     $busquedas = false;
-    $Conductor_No_Encontrado = array(
-        'id_person_conductor' => ''
-    );
     $form = $this->request->getPost();
-    $info = (string) ($form['info_conductor'] ?? '');
-    if ($this->buscar_conductor($info) != $Conductor_No_Encontrado)
+    $info = isset($form['valor_busqueda'], $form['criterio_busqueda'])
+      ? trim((string) $form['valor_busqueda']) . '~' . (string) $form['criterio_busqueda']
+      : (string) ($form['info_conductor'] ?? '');
+    $encontrado = $this->buscar_conductor($info);
+    if ($encontrado['id_person_conductor'] !== '')
     {
       $busquedas = true;
-      $this->ElegirVista('Conductor', $this->buscar_conductor($info));
+      $this->ElegirVista('Conductor', $encontrado);
     }
     if (!$busquedas)
     {
       echo '<script type="text/javascript">
-        alert("Registro No existe o No Esta Inactivo");
+        alert("Registro No existe");
         </script>';
       echo view('header');
       echo view('sidebar');
@@ -410,20 +411,20 @@ class Cobranza extends BaseController
   public function buscar_cobranza_detalle_vehiculo()
   {
     $busquedas = false;
-    $Vehiculo_No_Encontrado = array(
-        'id_vehiculo' => ''
-    );
     $form = $this->request->getPost();
-    $info = (string) ($form['info_vehiculo'] ?? '');
-    if ($this->buscar_vehiculo($info) != $Vehiculo_No_Encontrado)
+    $info = isset($form['valor_busqueda'], $form['criterio_busqueda'])
+      ? trim((string) $form['valor_busqueda']) . '~' . (string) $form['criterio_busqueda']
+      : (string) ($form['info_vehiculo'] ?? '');
+    $encontrado = $this->buscar_vehiculo($info);
+    if ($encontrado['id_vehiculo'] !== '')
     {
       $busquedas = true;
-      $this->ElegirVista('Vehiculo', $this->buscar_vehiculo($info));
+      $this->ElegirVista('Vehiculo', $encontrado);
     }
     if (!$busquedas)
     {
       echo '<script type="text/javascript">
-        alert("Registro No existe o No Esta Inactivo");
+        alert("Registro No existe");
         </script>';
       echo view('header');
       echo view('sidebar');
@@ -1330,6 +1331,10 @@ class Cobranza extends BaseController
   public function agregar_servicio_afiliado($id_person_afiliado)
   {
     $info = array('id_person_afiliado' => $id_person_afiliado);
+    $info['servicios'] = $this->db->query(
+      'SELECT nombre_servicio FROM tbl_servicio WHERE aplica=? AND estado_servicio=1 ORDER BY nombre_servicio',
+      [1]
+    )->getResult();
     echo view('header');
     echo view('sidebar');
     echo view('cobranza/agregar_servicio_afiliado', $info);
@@ -1338,6 +1343,10 @@ class Cobranza extends BaseController
   public function agregar_servicio_conductor($id_person_conductor)
   {
     $info = array('id_person_conductor' => $id_person_conductor);
+    $info['servicios'] = $this->db->query(
+      'SELECT nombre_servicio FROM tbl_servicio WHERE aplica=? AND estado_servicio=1 ORDER BY nombre_servicio',
+      [2]
+    )->getResult();
     echo view('header');
     echo view('sidebar');
     echo view('cobranza/agregar_servicio_conductor', $info);
